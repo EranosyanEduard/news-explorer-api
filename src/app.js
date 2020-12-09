@@ -11,6 +11,10 @@ const dbConnectionOptions = {
 
 mongoose.connect('mongodb://localhost:27017/news-explorer-db', dbConnectionOptions);
 
+// Protected routes
+app.use('/', require('./routes/users'));
+app.use('/', require('./routes/articles'));
+
 app.listen(PORT, () => {
   console.log('Сервер запущен');
 });
