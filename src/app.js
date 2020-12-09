@@ -16,6 +16,8 @@ mongoose.connect('mongodb://localhost:27017/news-explorer-db', dbConnectionOptio
 app.use(require('./middlewares/auth'));
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/articles'));
+// Express error handler
+app.use(require('./middlewares/err'));
 
 app.listen(PORT, () => {
   console.log('Сервер запущен');
