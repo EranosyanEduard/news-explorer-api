@@ -1,7 +1,8 @@
-const router = require('mongoose').Router();
+const router = require('express').Router();
 const {
   celebrateArticleAdding,
-  celebrateArticleRemoving
+  celebrateArticleRemoving,
+  checkArticleURL
 } = require('../middlewares/request-validator');
 const {
   createArticle,
@@ -9,8 +10,17 @@ const {
   removeArticle
 } = require('../controllers/articles');
 
-router.post('/articles', celebrateArticleAdding(), createArticle);
-router.delete('/articles/:articleId', celebrateArticleRemoving(), removeArticle);
+router.post(
+  '/articles',
+  celebrateArticleAdding(),
+  checkArticleURL,
+  createArticle
+);
+router.delete(
+  '/articles/:articleId',
+  celebrateArticleRemoving(),
+  removeArticle
+);
 router.get('/articles', getFavoriteArticles);
 
 module.exports = router;
