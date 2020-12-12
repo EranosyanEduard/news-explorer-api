@@ -1,5 +1,6 @@
 const { Joi, celebrate } = require('celebrate');
 const BadRequestError = require('../errors/bad-request-error');
+const { errorMessages } = require('../utils/constants');
 const { isURL } = require('../utils/validator');
 
 const defaultFieldTemplate = Joi.string().required();
@@ -46,7 +47,7 @@ const celebrateSignUp = () => celebrate({
 const checkArticleURL = (req, _, next) => {
   const { image, link } = req.body;
   if (!isURL(image) || !isURL(link)) {
-    next(new BadRequestError('Недопустимое значение URL!'));
+    next(new BadRequestError(errorMessages.invalidURL));
     return;
   }
   next();

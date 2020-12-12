@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { isEmail, message } = require('../utils/validator');
 const UnauthorizedError = require('../errors/unauthorized-error');
+const { errorMessages } = require('../utils/constants');
 
 const generalFieldProps = {
   type: String,
@@ -28,8 +29,8 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.statics.findUserByCredential = function ({ email, password }) {
-  const credentialError = new UnauthorizedError('Недопустимые входные данные!');
+userSchema.statics.findUserByCredential = function findUserByCredential({ email, password }) {
+  const credentialError = new UnauthorizedError(errorMessages.invalidCredential);
   return this.findOne({ email })
     .select('+password')
     .orFail(() => credentialError)
