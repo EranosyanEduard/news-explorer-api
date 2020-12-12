@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const { createUser, login } = require('./controllers/users');
@@ -19,11 +20,16 @@ const dbConnectionOptions = {
   useFindAndModify: false,
   useUnifiedTopology: true
 };
+const corsOptions = {
+  origin: /^re$/,
+  optionsSuccessStatus: 200
+};
 
 mongoose.connect('mongodb://localhost:27017/news-explorer-db', dbConnectionOptions);
 
 app.use(bodyParser.json());
 app.use(requestLogger);
+app.use(cors(corsOptions));
 // Unprotected routes
 app.post('/signup', celebrateSignUp(), createUser);
 app.post('/signin', celebrateSignIn(), login);
