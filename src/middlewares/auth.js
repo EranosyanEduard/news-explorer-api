@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
-const UnauthorizedError = require('../errors/unauthorized-error');
-const { jwtPublic } = require('../utils/base-config');
-const { errorMessages } = require('../utils/constants');
+const UnauthorizedError = require('../errors/unauthorized-err');
+const { jwtPublic } = require('../utils/config');
+const { invalidJWT } = require('../utils/constants').errorMessages;
 
 const checkJWT = (req, _, next) => {
   const { authorization } = req.headers;
   const tokenSchemePattern = /^Bearer /;
-  const authError = new UnauthorizedError(errorMessages.invalidJWT);
+  const authError = new UnauthorizedError(invalidJWT);
 
   if (!tokenSchemePattern.test(authorization)) {
     next(authError);
@@ -14,8 +14,7 @@ const checkJWT = (req, _, next) => {
   }
 
   const token = authorization.replace(tokenSchemePattern, '');
-  const { JWT_SECRET, NODE_ENV } = process.env;
-  const jwtKey = NODE_ENV === 'production' ? JWT_SECRET : jwtPublic;
+  const jwtKey = process.env.JWT_SECRET || jwtPublic;
   let tokenPayload;
 
   try {

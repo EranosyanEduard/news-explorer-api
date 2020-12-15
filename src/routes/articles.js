@@ -1,26 +1,16 @@
 const router = require('express').Router();
 const {
-  celebrateArticleAdding,
-  celebrateArticleRemoving,
-  checkArticleURL
-} = require('../middlewares/request-validator');
+  checkArticleData,
+  checkArticleID
+} = require('../middlewares/celebrate');
 const {
   createArticle,
   getFavoriteArticles,
   removeArticle
 } = require('../controllers/articles');
 
-router.post(
-  '/articles',
-  celebrateArticleAdding(),
-  checkArticleURL,
-  createArticle
-);
-router.delete(
-  '/articles/:articleId',
-  celebrateArticleRemoving(),
-  removeArticle
-);
-router.get('/articles', getFavoriteArticles);
+router.post('/', checkArticleData(), createArticle);
+router.delete('/:articleId', checkArticleID(), removeArticle);
+router.get('/', getFavoriteArticles);
 
 module.exports = router;

@@ -1,18 +1,22 @@
 {
   "name": "news-explorer-api",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "'news explorer api' project is a backend part of the final qualification work in the course of web development",
   "main": "src/app.js",
   "scripts": {
-    "dev": "NODE_ENV=dev nodemon src/app.js",
+    "dev": "nodemon src/app.js",
     "start": "node src/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EranosyanEduard/news-explorer-api.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "news explorer api",
+    "express.js",
+    "mongoDB"
+  ],
+  "author": "eranosyan eduard",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EranosyanEduard/news-explorer-api/issues"
@@ -31,7 +35,9 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.2.3",
     "express-winston": "^4.0.5",
+    "helmet": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.5",
     "validator": "^13.5.1",

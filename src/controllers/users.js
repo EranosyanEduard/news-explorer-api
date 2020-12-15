@@ -1,10 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const DuplicateKeyError = require('../errors/duplicate-key-error');
-const NotFoundError = require('../errors/not-found-error');
-const { jwtPublic } = require('../utils/base-config');
-const { errorMessages } = require('../utils/constants');
+const DuplicateKeyError = require('../errors/duplicate-key-err');
+const NotFoundError = require('../errors/not-found-err');
+const { jwtPublic } = require('../utils/config');
+const {
+  duplicateEmail,
+  notFoundUser
+} = require('../utils/constants').errorMessages;
 
 const createUser = (req, res, next) => {
   const { email, name, password } = req.body;
@@ -17,7 +20,7 @@ const createUser = (req, res, next) => {
       })
         .then((user) => user)
         .catch(() => (
-          Promise.reject(new DuplicateKeyError(errorMessages.invalidEmail))
+          Promise.reject(new DuplicateKeyError(duplicateEmail))
         ))
     ))
     .then((user) => User.findById(user._id))
@@ -29,7 +32,7 @@ const createUser = (req, res, next) => {
 
 const getCurrentUser = (req, res, next) => {
   User.findById(req.currentUser._id)
-    .orFail(() => new NotFoundError(errorMessages.undefinedUser))
+    .orFail(() => new NotFoundError(notFoundUser))
     .then((currentUser) => {
       res.send(currentUser);
     })
@@ -37,8 +40,7 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  const { JWT_SECRET, NODE_ENV } = process.env;
-  const jwtKey = NODE_ENV === 'production' ? JWT_SECRET : jwtPublic;
+  const jwtKey = process.env.JWT_SECRET || jwtPublic;
   User.findUserByCredential(req.body)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, jwtKey, { expiresIn: '7d' });

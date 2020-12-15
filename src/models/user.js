@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { isEmail, message } = require('../utils/validator');
-const UnauthorizedError = require('../errors/unauthorized-error');
-const { errorMessages } = require('../utils/constants');
+const { isEmail } = require('validator');
+const UnauthorizedError = require('../errors/unauthorized-err');
+const {
+  errorMessages,
+  msgTemplatesToJoi
+} = require('../utils/constants');
 
 const generalFieldProps = {
   type: String,
@@ -15,7 +18,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: isEmail,
-      message
+      message: `${msgTemplatesToJoi.string.invalid} email`
     }
   },
   name: {

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const { isURL, message } = require('../utils/validator');
+const { isURL } = require('validator');
+const { msgTemplatesToJoi } = require('../utils/constants');
 
 const generalFieldProps = {
   type: String,
@@ -12,7 +13,7 @@ const articleSchema = new mongoose.Schema({
     ...generalFieldProps,
     validate: {
       validator: isURL,
-      message
+      message: `${msgTemplatesToJoi.string.invalid} image`
     }
   },
   keyword: generalFieldProps,
@@ -20,7 +21,7 @@ const articleSchema = new mongoose.Schema({
     ...generalFieldProps,
     validate: {
       validator: isURL,
-      message
+      message: `${msgTemplatesToJoi.string.invalid} link`
     }
   },
   owner: {
