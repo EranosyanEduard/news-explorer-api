@@ -1,7 +1,7 @@
 const cors = require('cors');
 
 const enableCORS = () => cors({
-  origin: /^re$/,
+  origin: /^https?:\/{2}(w{3}\.)?news-explorer\.ml$/,
   optionsSuccessStatus: 200
 });
 
