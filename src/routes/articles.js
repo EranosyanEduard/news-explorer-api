@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const {
   checkArticleData,
-  checkArticleID
+  checkArticleID,
 } = require('../middlewares/celebrate');
 const {
   createArticle,
   getFavoriteArticles,
-  removeArticle
+  removeArticle,
 } = require('../controllers/articles');
 
 router.post('/', checkArticleData(), createArticle);

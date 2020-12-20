@@ -4,13 +4,13 @@ const dbConnectionProps = {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
-  }
+    useUnifiedTopology: true,
+  },
 };
 
 const jwtPublic = 'jwtPublicKey';
 
 module.exports = {
   dbConnectionProps,
-  jwtPublic
+  jwtPublic,
 };

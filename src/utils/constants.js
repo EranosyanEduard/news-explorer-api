@@ -7,13 +7,13 @@ const errorMessages = {
   notFoundArticle: 'Запрашиваемая статья не найдена',
   notFoundResource: 'Запрашиваемый ресурс не найден',
   notFoundUser: 'Запрашиваемый пользователь не найден',
-  rejectArticleRemoving: 'У вас недостаточно прав для удаления статьи'
+  rejectArticleRemoving: 'У вас недостаточно прав для удаления статьи',
 };
 
 // Message templates to Joi errors
 const msgTemplatesToJoi = {
   any: {
-    required: 'Отсутствует поле {*} и его значение'
+    required: 'Отсутствует поле {*} и его значение',
   },
   string: {
     base: 'Значение поля {*} должно быть строковым литералом',
@@ -21,10 +21,9 @@ const msgTemplatesToJoi = {
     invalid: 'Невалидное (недопустимое) значение поля {*}',
     max: 'Значение поля {1} должно содержать не более {2} символов',
     min: 'Значение поля {1} должно содержать не менее {2} символов',
-    token: 'Значение поля {*} может содержать следующие символы: '
-      + 'буквы английского алфавита в верхнем или нижнем регистрах, '
-      + 'цифры и нижнее подчеркивание'
-  }
+    token: 'Значение поля {*} может содержать любые символы за исключением '
+      + 'переносов строк, пробелов и табуляций',
+  },
 };
 
 const createMessagesToJoiObject = (keys) => keys.reduce((acc, key) => ({
@@ -32,8 +31,8 @@ const createMessagesToJoiObject = (keys) => keys.reduce((acc, key) => ({
   [key]: {
     'string.base': msgTemplatesToJoi.string.base.replace('{*}', key),
     'string.empty': msgTemplatesToJoi.string.empty.replace('{*}', key),
-    'any.required': msgTemplatesToJoi.any.required.replace('{*}', key)
-  }
+    'any.required': msgTemplatesToJoi.any.required.replace('{*}', key),
+  },
 }), {});
 
 const getStringTemplateReplacer = (values) => (searchValue) => (
@@ -41,11 +40,11 @@ const getStringTemplateReplacer = (values) => (searchValue) => (
 );
 
 const messagesToArticleSchema = createMessagesToJoiObject([
-  'date', 'image', 'keyword', 'link', 'source', 'text', 'title'
+  'date', 'image', 'keyword', 'link', 'source', 'text', 'title',
 ]);
 
 const messagesToUserSchema = createMessagesToJoiObject([
-  'email', 'name', 'password'
+  'email', 'name', 'password',
 ]);
 
 messagesToUserSchema.email['string.email'] = msgTemplatesToJoi
@@ -68,14 +67,14 @@ messagesToUserSchema.password['string.min'] = msgTemplatesToJoi
   .min
   .replace(/{\d}/g, getStringTemplateReplacer(['password', '8']));
 
-messagesToUserSchema.password['string.token'] = msgTemplatesToJoi
-  .string
-  .token
-  .replace('{*}', 'password');
+// Message to rate-limiter middleware
+const rateLimiterErrorMessage = 'Слишком много запросов!'
+  + 'Пожалуйста, повторите запрос позже';
 
 module.exports = {
   errorMessages,
   msgTemplatesToJoi,
   messagesToArticleSchema,
-  messagesToUserSchema
+  messagesToUserSchema,
+  rateLimiterErrorMessage,
 };

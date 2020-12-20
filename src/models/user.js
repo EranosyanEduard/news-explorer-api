@@ -4,12 +4,12 @@ const { isEmail } = require('validator');
 const UnauthorizedError = require('../errors/unauthorized-err');
 const {
   errorMessages,
-  msgTemplatesToJoi
+  msgTemplatesToJoi,
 } = require('../utils/constants');
 
 const generalFieldProps = {
   type: String,
-  required: true
+  required: true,
 };
 
 const userSchema = new mongoose.Schema({
@@ -18,18 +18,18 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: isEmail,
-      message: `${msgTemplatesToJoi.string.invalid} email`
-    }
+      message: `${msgTemplatesToJoi.string.invalid} email`,
+    },
   },
   name: {
     ...generalFieldProps,
     minlength: 2,
-    maxlength: 30
+    maxlength: 30,
   },
   password: {
     ...generalFieldProps,
-    select: false
-  }
+    select: false,
+  },
 });
 
 userSchema.statics.findUserByCredential = function findUserByCredential({ email, password }) {

@@ -4,7 +4,7 @@ const { msgTemplatesToJoi } = require('../utils/constants');
 
 const generalFieldProps = {
   type: String,
-  required: true
+  required: true,
 };
 
 const articleSchema = new mongoose.Schema({
@@ -13,26 +13,26 @@ const articleSchema = new mongoose.Schema({
     ...generalFieldProps,
     validate: {
       validator: isURL,
-      message: `${msgTemplatesToJoi.string.invalid} image`
-    }
+      message: `${msgTemplatesToJoi.string.invalid} image`,
+    },
   },
   keyword: generalFieldProps,
   link: {
     ...generalFieldProps,
     validate: {
       validator: isURL,
-      message: `${msgTemplatesToJoi.string.invalid} link`
-    }
+      message: `${msgTemplatesToJoi.string.invalid} link`,
+    },
   },
   owner: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'user',
     required: true,
-    select: false
+    select: false,
   },
   source: generalFieldProps,
   text: generalFieldProps,
-  title: generalFieldProps
+  title: generalFieldProps,
 });
 
 module.exports = mongoose.model('article', articleSchema);

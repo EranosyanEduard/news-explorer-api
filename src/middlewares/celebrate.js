@@ -3,7 +3,7 @@ const { isURL } = require('validator');
 const {
   msgTemplatesToJoi,
   messagesToArticleSchema,
-  messagesToUserSchema
+  messagesToUserSchema,
 } = require('../utils/constants');
 
 const fieldRule = Joi.string().required();
@@ -30,14 +30,14 @@ const checkArticleData = () => celebrate({
     text: fieldRule
       .messages(messagesToArticleSchema.text),
     title: fieldRule
-      .messages(messagesToArticleSchema.title)
-  })
+      .messages(messagesToArticleSchema.title),
+  }),
 });
 
 const checkArticleID = () => celebrate({
   params: Joi.object().keys({
-    articleId: Joi.string().hex().length(24)
-  })
+    articleId: Joi.string().hex().length(24),
+  }),
 });
 
 // User validators
@@ -51,21 +51,25 @@ const { email, name, password } = {
     .messages(messagesToUserSchema.name),
   password: fieldRule
     .min(8)
-    .token()
-    .messages(messagesToUserSchema.password)
+    .custom((value, helpers) => (
+      /^[^\s]+$/.test(value)
+        ? value
+        : helpers.message(msgTemplatesToJoi.string.token.replace('{*}', 'password'))
+    ))
+    .messages(messagesToUserSchema.password),
 };
 
 const celebrateSignIn = () => celebrate({
-  body: Joi.object().keys({ email, password })
+  body: Joi.object().keys({ email, password }),
 });
 
 const celebrateSignUp = () => celebrate({
-  body: Joi.object().keys({ email, name, password })
+  body: Joi.object().keys({ email, name, password }),
 });
 
 module.exports = {
   checkArticleData,
   checkArticleID,
   celebrateSignIn,
-  celebrateSignUp
+  celebrateSignUp,
 };

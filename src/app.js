@@ -21,7 +21,7 @@ app.use(requestLogger);
 app.use(enableCORS());
 app.use(enableRateLimiter());
 // General router
-app.use('/', require('./routes/router'));
+app.use('/', require('./routes/index'));
 // Error handlers
 app.use(errorLogger);
 app.use(errors());

@@ -6,7 +6,7 @@ const NotFoundError = require('../errors/not-found-err');
 const { jwtPublic } = require('../utils/config');
 const {
   duplicateEmail,
-  notFoundUser
+  notFoundUser,
 } = require('../utils/constants').errorMessages;
 
 const createUser = (req, res, next) => {
@@ -16,7 +16,7 @@ const createUser = (req, res, next) => {
       User.create({
         email,
         name,
-        password: hash
+        password: hash,
       })
         .then((user) => user)
         .catch(() => (
@@ -52,5 +52,5 @@ const login = (req, res, next) => {
 module.exports = {
   createUser,
   getCurrentUser,
-  login
+  login,
 };

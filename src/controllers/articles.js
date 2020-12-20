@@ -3,7 +3,7 @@ const ForbiddenError = require('../errors/forbidden-err');
 const NotFoundError = require('../errors/not-found-err');
 const {
   notFoundArticle,
-  rejectArticleRemoving
+  rejectArticleRemoving,
 } = require('../utils/constants').errorMessages;
 
 const createArticle = (req, res, next) => {
@@ -48,5 +48,5 @@ const removeArticle = (req, res, next) => {
 module.exports = {
   createArticle,
   getFavoriteArticles,
-  removeArticle
+  removeArticle,
 };
